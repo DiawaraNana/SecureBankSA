@@ -37,8 +37,11 @@
 Ce matin à **06h47**, le système de monitoring détecte des anomalies réseau sur la DMZ. La DSI active le **SOC d'urgence**. Vous êtes les analystes **Tier 1** en charge de l'investigation.
 
 🔴 INCIDENT ACTIF
+
 ├── 06h47 — Scan réseau détecté sur DMZ
+
 ├── 07h03 — 247 tentatives SSH sur 192.168.50.10
+
 └── 07h15 — Injection SQL suspectée sur /api/login
 
 
@@ -65,6 +68,7 @@ Le lab repose sur **4 machines virtuelles** interconnectées sur un réseau inte
 └─────────────────────────────────────────────────────────────────────┘
 WAN/NAT (rouge) LAN 192.168.50.0/24 (Host-Only)
 │ │
+
 ┌────▼─────┐ ┌─────▼──────┐
 │ VM-KALI │ │ VM-pfSense │
 │ Red Team │── WAN/NAT ──▶│ 192.168.50.1│
@@ -74,6 +78,7 @@ WAN/NAT (rouge) LAN 192.168.50.0/24 (Host-Only)
 └──────────┘ │
 syslog:514 │
 ▼
+
 ┌──────────────────────────┐
 │ VM-SIEM │
 │ 192.168.50.100 │
@@ -195,7 +200,7 @@ systemctl enable --now elasticsearch kibana
 sleep 60
 curl -s http://localhost:9200/_cluster/health?pretty
 ```
-# → "status" : "green"
+ → "status" : "green"
 
 ### Étape 3 — Filebeat : collecte Suricata + syslog (20 min)
 Sur pfSense : Status → System Logs → Settings
@@ -227,7 +232,7 @@ systemctl enable --now filebeat
 
 # Vérification
 curl "http://localhost:9200/_cat/indices?v"
-# → securebank-filebeat-* doit avoir docs.count > 0
+ → securebank-filebeat-* doit avoir docs.count > 0
 
 ### Étape 4 — Wazuh Manager + Agent (20 min)
 Sur VM-SIEM (Wazuh Manager) :
@@ -262,7 +267,7 @@ Vérification (sur VM-SIEM) :
 ```
 /var/ossec/bin/agent_control -l
 ```
-# → ID:001  Name: web01-securebank  Status: Active ✓
+ → ID:001  Name: web01-securebank  Status: Active ✓
 
 ### ⚔️ Simulation de l'attaque (Red Team)
 ⚖️ Rappel éthique et légal : Ces commandes ciblent exclusivement les VMs de votre lab personnel isolé. Exécuter ces outils sur des systèmes tiers sans autorisation constitue une infraction pénale (Code pénal marocain, loi 07-03).
